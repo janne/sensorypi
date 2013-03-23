@@ -1,9 +1,9 @@
 package main
 
 import (
+	"fmt"
+	"github.com/janne/tempered"
 	"log"
-	"os"
-	"os/exec"
 	"os/user"
 )
 
@@ -16,13 +16,15 @@ func init() {
 }
 
 func main() {
-	cmd := exec.Command("read-repeat", "0001:0005:01")
-	cmd.Stdout = os.Stdout
-
-	err := cmd.Start()
+	t, err := tempered.New()
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer t.Close()
 
-	cmd.Wait()
+	sensing, err := t.Devices[0].Sense()
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Printf("%.2f°C %.1f%%RH\n", sensing.TempC, sensing.RelHum)
 }
