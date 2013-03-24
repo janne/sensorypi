@@ -4,16 +4,7 @@ import (
 	"fmt"
 	"github.com/janne/tempered"
 	"log"
-	"os/user"
 )
-
-func init() {
-	if usr, err := user.Current(); err != nil {
-		panic(err)
-	} else if usr.Uid != "0" {
-		log.Fatal("sensorypi needs to be run as root")
-	}
-}
 
 func main() {
 	t, err := tempered.New()
